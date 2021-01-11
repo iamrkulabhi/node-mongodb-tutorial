@@ -1,0 +1,103 @@
+<%- include("includes/header.ejs") %>
+<%- include("includes/navigation.ejs") %>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-1 text-gray-800"><%= title %></h1>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- First Column -->
+        <div class="col-lg-12">
+
+            <!-- Custom Text Color Utilities -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Profile Details</h6>
+                </div>
+                <div class="card-body">
+                    <% if(successMsg) { %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Success! </strong><%= successMsg %>
+                        </div>
+                    <% } %>
+                    <% if(errorMsg) { %>
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Error! </strong><%= errorMsg %>
+                        </div>
+                    <% } %>
+                    <form action="<%= actionUrl %>" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="_csrf" value="<%= csfrToken %>"/>
+                        <div class="form-row">
+                            <div class="form-group col">
+                              <label for="name">Name</label>
+                              <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name" value="<%= loggedInUser.name %>" readonly>
+                            </div>
+                            <div class="form-group col">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="<%= loggedInUser.email %>" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <p>Gender</p>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="genderOp1" <% if(loggedInUser.profile != null && loggedInUser.profile.gender == "male"){ %> checked<% } %> value="male">
+                                    <label class="form-check-label" for="genderOp1">Male</label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="genderOp2" <% if(loggedInUser.profile != null && loggedInUser.profile.gender == "female"){ %> checked<% } %> value="female">
+                                    <label class="form-check-label" for="genderOp2">Female</label>
+                                  </div>
+                            </div>
+                            <div class="form-group col">
+                                <%
+                                    function getFormattedDob() {
+                                        let rawDate = new Date()
+                                        if(loggedInUser.profile != null){
+                                            rawDate = loggedInUser.profile.dob
+                                        }
+                                        const year = rawDate.getFullYear()
+                                        let month = rawDate.getMonth() + 1
+                                        month = month < 10 ? `0${month}` : month
+                                        let dt = rawDate.getDate()
+                                        dt = dt < 10 ? `0${dt}` : dt
+
+                                        return `${year}-${month}-${dt}`
+                                    }
+                                %>
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" class="form-control" name="dob" id="dob" placeholder="Enter Birth-date" value="<%= getFormattedDob() %>">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col"></div>
+                            <div class="form-group col">
+                                <p>Profile Picture</p>
+                                <% if(loggedInUser.profile != null && loggedInUser.profile.imageUrl != ''){ %>
+                                <img src="<%= loggedInUser.profile.imageUrl %>" alt="<%= loggedInUser.name %>" class="rounded mx-auto d-block img-thumbnail w-50"/>
+                                <% } %>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                      <input type="file" class="custom-file-input" id="image" name="image">
+                                      <label class="custom-file-label" for="image">Choose file</label>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+<%- include("includes/footer.ejs") %>
