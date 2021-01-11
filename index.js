@@ -61,9 +61,9 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 //define middlewares
-//app.use(helmet())
-//app.use(compression())
-//app.use(morgan('combined', {stream: accessLogStream}))
+app.use(helmet())
+app.use(compression())
+app.use(morgan('combined', {stream: accessLogStream}))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -114,6 +114,7 @@ mongoose.connect(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {
     app.listen(APP_PORT)
     // https.createServer({key: privateKey, cert: certificate}, app).listen(APP_PORT)
+    // https://node-mongo-tutorial.herokuapp.com/login
 })
 .catch(err => {
     console.log(err) 

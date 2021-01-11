@@ -162,7 +162,7 @@ exports.postForgetPassword = (req, res, next) => {
                 to: [req.body.email],
                 from: 'rahul.kulabhi@codeclouds.in',
                 subject: 'Forget password request',
-                html: `<h3>Want to Reset password?</h3><p>To reset password <a href="http://localhost:3000/reset-password/${token}">click here</a> to proceed.</p>`
+                html: `<h3>Want to Reset password?</h3><p>To reset password <a href="https://node-mongo-tutorial.herokuapp.com/reset-password/${token}">click here</a> to proceed.</p>`
             }
             mailer.sendMail(emailOption, (err, data) => {
                 if (err) {
